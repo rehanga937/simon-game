@@ -1,0 +1,76 @@
+const colors = ["red", "blue", "green", "yellow"];
+const colorsLength = colors.length;
+var systemPattern = []; // fow now start with green
+var userEnteredPattern = [];
+function animateColorButton(colorButton) {
+    colorButton.classList.add("pressed");
+    setTimeout(function () {
+        colorButton.classList.remove("pressed");
+    }, 100);
+}
+function increaseSystemPattern() {
+    const randomNumber = Math.floor(Math.random() * colorsLength);
+    const randomColor = colors[randomNumber];
+    systemPattern.push(randomColor);
+}
+function showSystemPattern() {
+    for (const color of systemPattern) {
+        const button = $(`#${color}`);
+        animateColorButton(button[0]);
+    }
+}
+function nextRound() {
+    userEnteredPattern = [];
+    increaseSystemPattern();
+    showSystemPattern();
+}
+function initializeGame() {
+    systemPattern = [];
+    userEnteredPattern = [];
+}
+function doesMatchLength(array1, array2) {
+    if (array1.length != array2.length) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+function patternSoFarCorrect() {
+    const systemPatternLength = systemPattern.length;
+    for (let i = 0; i < systemPatternLength; i++) {
+        const userPress = userEnteredPattern[i];
+        const systemPress = systemPattern[i];
+        if (userPress != systemPress) {
+            return false;
+        }
+    }
+    return true;
+}
+function onUserTap(event) {
+    const colorButton = $(event.target);
+    const color = colorButton.attr("id");
+    userEnteredPattern.push(color);
+    console.log(`current system pattern ${systemPattern}`);
+    console.log(`user tapped ${color}`);
+    console.log(`user total pattern ${userEnteredPattern}`);
+    animateColorButton(colorButton[0]);
+    if (patternSoFarCorrect()) {
+        const sound = new Audio(`sounds/${color}.mp3`);
+        sound.play();
+        if (doesMatchLength(userEnteredPattern, systemPattern)) {
+            nextRound();
+        }
+    }
+    else {
+        const sound = new Audio("sounds/wrong.mp3");
+        sound.play();
+        initializeGame();
+        nextRound(); // round 1
+    }
+    console.log(`new system pattern ${systemPattern}`);
+    console.log(' ');
+}
+initializeGame();
+nextRound(); // round 1
+$(".btn").on("click", onUserTap);
