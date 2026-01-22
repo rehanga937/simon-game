@@ -17,6 +17,7 @@ function showSystemPattern() {
     for (const color of systemPattern) {
         const button = $(`#${color}`);
         animateColorButton(button[0]);
+        // TODO: add a wait period here
     }
 }
 function nextRound() {
@@ -37,8 +38,8 @@ function doesMatchLength(array1, array2) {
     }
 }
 function patternSoFarCorrect() {
-    const systemPatternLength = systemPattern.length;
-    for (let i = 0; i < systemPatternLength; i++) {
+    const userPatternLength = userEnteredPattern.length;
+    for (let i = 0; i < userPatternLength; i++) {
         const userPress = userEnteredPattern[i];
         const systemPress = systemPattern[i];
         if (userPress != systemPress) {
