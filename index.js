@@ -13,17 +13,15 @@ function increaseSystemPattern() {
     const randomColor = colors[randomNumber];
     systemPattern.push(randomColor);
 }
-function showSystemPattern() {
-    for (const color of systemPattern) {
-        const button = $(`#${color}`);
-        animateColorButton(button[0]);
-        // TODO: add a wait period here
-    }
+function showSystemPatternLatestButton() {
+    const latestColor = systemPattern[systemPattern.length - 1];
+    const button = $(`#${latestColor}`);
+    button.fadeOut(200).fadeIn(200);
 }
 function nextRound() {
     userEnteredPattern = [];
     increaseSystemPattern();
-    showSystemPattern();
+    showSystemPatternLatestButton();
 }
 function initializeGame() {
     systemPattern = [];
