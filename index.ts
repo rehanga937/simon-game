@@ -3,6 +3,7 @@ const colorsLength = colors.length;
 
 var systemPattern: string[] = []; // fow now start with green
 var userEnteredPattern: string[] = [];
+var level: number = 0
 
 
 function animateColorButton(colorButton: Element) {
@@ -29,11 +30,14 @@ function nextRound() {
     userEnteredPattern = [];
     increaseSystemPattern();
     showSystemPatternLatestButton();
+    level += 1;
+    $("#level-title").text(`Level ${level}`)
 }
 
 function initializeGame() {
     systemPattern = [];
     userEnteredPattern = [];
+    $("#level-title").text("Press A Key to Start")
 }
 
 function doesMatchLength(array1: any[], array2: any[]): boolean {
@@ -79,9 +83,14 @@ function onUserTap(event: JQuery.ClickEvent) {
             nextRound();
         }
     } else {
+        $("body").addClass("game-over");
+        setTimeout(function () {
+            $("body").removeClass("game-over");
+        }, 200);
         const sound = new Audio("sounds/wrong.mp3");
         sound.play();
         initializeGame();
+        level = 0;
         nextRound(); // round 1
     }
 

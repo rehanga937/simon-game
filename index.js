@@ -2,6 +2,7 @@ const colors = ["red", "blue", "green", "yellow"];
 const colorsLength = colors.length;
 var systemPattern = []; // fow now start with green
 var userEnteredPattern = [];
+var level = 0;
 function animateColorButton(colorButton) {
     colorButton.classList.add("pressed");
     setTimeout(function () {
@@ -22,10 +23,13 @@ function nextRound() {
     userEnteredPattern = [];
     increaseSystemPattern();
     showSystemPatternLatestButton();
+    level += 1;
+    $("#level-title").text(`Level ${level}`);
 }
 function initializeGame() {
     systemPattern = [];
     userEnteredPattern = [];
+    $("#level-title").text("Press A Key to Start");
 }
 function doesMatchLength(array1, array2) {
     if (array1.length != array2.length) {
@@ -62,9 +66,14 @@ function onUserTap(event) {
         }
     }
     else {
+        $("body").addClass("game-over");
+        setTimeout(function () {
+            $("body").removeClass("game-over");
+        }, 200);
         const sound = new Audio("sounds/wrong.mp3");
         sound.play();
         initializeGame();
+        level = 0;
         nextRound(); // round 1
     }
     console.log(`new system pattern ${systemPattern}`);
